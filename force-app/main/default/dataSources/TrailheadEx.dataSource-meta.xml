@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalDataSource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authProvider>ApigeeEval</authProvider>
+    <customConfiguration>{"inlineCountEnabled":"true","requestCompression":"false","pagination":"CLIENT","noIdMapping":"false","format":"ATOM","searchFunc":"","compatibility":"DEFAULT","timeout":"120","searchEnabled":"true"}</customConfiguration>
+    <endpoint>https://bobbywhite-eval-test.apigee.net/odatasecure</endpoint>
+    <isWritable>false</isWritable>
+    <label>TrailheadEx</label>
+    <principalType>NamedUser</principalType>
+    <protocol>Oauth</protocol>
+    <type>OData</type>
+</ExternalDataSource>

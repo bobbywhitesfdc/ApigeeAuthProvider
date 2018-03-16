@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Apigee</label>
+    <protected>false</protected>
+    <values>
+        <field>Access_Token_URL__c</field>
+        <value xsi:type="xsd:string">https://bobbywhite-eval-test.apigee.net/oauth/client_credential/accesstoken</value>
+    </values>
+    <values>
+        <field>Auth_Provider_Name__c</field>
+        <value xsi:type="xsd:string">Apigee</value>
+    </values>
+    <values>
+        <field>Callback_URL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Client_Id__c</field>
+        <value xsi:type="xsd:string">Yk0tetf82AYogy5nNhA8dxF2FGby7pOk</value>
+    </values>
+    <values>
+        <field>Client_Secret__c</field>
+        <value xsi:type="xsd:string">sqWAgMtG28OM1Ywx</value>
+    </values>
+    <values>
+        <field>Scope__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Use_JSON_Encoding__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+</CustomMetadata>
