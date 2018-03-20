@@ -1,3 +1,15 @@
+/**
+  Test Class for ApigeeAuthProvider
+  
+  Custom Auth Provider for Apigee API Gateway
+
+  Implements the Client Credentials flow which is intended for server-to-server integrations.
+
+  Authors:  Jerry Huang & Bobby White
+  Company:  Salesforce.com
+  
+**/
+
 @IsTest(isParallel=true)
 public class ApigeeAuthProviderTest {
         public static final String CONTENT_TYPE_HEADER = 'Content-Type';

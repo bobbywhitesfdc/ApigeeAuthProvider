@@ -2,6 +2,10 @@
   Custom Auth Provider for Apigee API Gateway
 
   Implements the Client Credentials flow which is intended for server-to-server integrations.
+
+  Authors:  Jerry Huang & Bobby White
+  Company:  Salesforce.com
+
 **/
 public class ApigeeAuthProvider extends Auth.AuthProviderPluginClass{
 
@@ -158,7 +162,7 @@ public class ApigeeAuthProvider extends Auth.AuthProviderPluginClass{
 
         System.debug('Endpoint: ' + endpoint.getUrl());
         System.debug('Content-Type:' + encoding);
-        System.debug('Body:' + encodedParams);
+        //System.debug('Body:' + encodedParams);
 
         req.setEndpoint(endpoint.getUrl()); 
         req.setHeader('Content-Type',encoding); 
