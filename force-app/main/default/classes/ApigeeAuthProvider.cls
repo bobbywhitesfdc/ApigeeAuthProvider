@@ -2,10 +2,6 @@
   Custom Auth Provider for Apigee API Gateway
 
   Implements the Client Credentials flow which is intended for server-to-server integrations.
-
-  Authors:  Jerry Huang, Bobby White
-  Company:  Salesforce.com
-
 **/
 public class ApigeeAuthProvider extends Auth.AuthProviderPluginClass{
 
@@ -146,19 +142,23 @@ public class ApigeeAuthProvider extends Auth.AuthProviderPluginClass{
      private TokenResponse retrieveToken(Map<String,String> config) {
          
         System.debug('retrieveToken');
+
+        final Boolean useJSONEncoding = Boolean.valueOf(config.get(CMT_FIELD_USE_JSON));
         
         final HttpRequest req = new HttpRequest();
 
         final PageReference endpoint = new PageReference(config.get(CMT_FIELD_AUTHTOKEN_URL)); //NOSONAR -- Protected by RemoteSite Setting
-        endpoint.getParameters().put('grant_type',GRANT_TYPE_CLIENT_CREDS);
+        if (!useJSONEncoding) { // Including the Query String breaks JSON encoded OAuth
+            endpoint.getParameters().put('grant_type',GRANT_TYPE_CLIENT_CREDS);            
+        }
 
         // Determine whether or not to use JSON encoding
-        final String encoding = Boolean.valueOf(config.get(CMT_FIELD_USE_JSON)) ? ENCODING_JSON : ENCODING_XML;
+        final String encoding = useJSONEncoding ? ENCODING_JSON : ENCODING_XML;
         final String encodedParams = encodeParameters(config,encoding);
 
         System.debug('Endpoint: ' + endpoint.getUrl());
         System.debug('Content-Type:' + encoding);
-        //System.debug('Body:' + encodedParams);  // From a security perspective no need to show the Key/Secret 
+        System.debug('Body:' + encodedParams);
 
         req.setEndpoint(endpoint.getUrl()); 
         req.setHeader('Content-Type',encoding); 

@@ -1,6 +1,7 @@
 @IsTest(isParallel=true)
 public class ApigeeAuthProviderTest {
-
+        public static final String CONTENT_TYPE_HEADER = 'Content-Type';
+        public static final String CONTENT_TYPE_JSON = 'application/json';
     	private static final String ACCESS_TOKEN = 'gv6iCx48OaH76ufiGXBUlRTRTXxx';
    	 	private static final String EXPIRES_IN = '123';
         private static final String STATE = 'mocktestState'; 
@@ -39,6 +40,8 @@ public class ApigeeAuthProviderTest {
         '}';
         private static final String jsonError1 = '{\"fault\":{\"faultstring\":\"Invalid client identifier {0}\",\"detail\":{\"errorcode\":\"oauth.v2.InvalidClientIdentifier\"}}}';
         private static final String jsonError2 = '{\"ErrorCode\" : \"invalid_client\", \"Error\" :\"Client credentials are invalid\"}';
+
+        private static final String jsonBadQueryParam = '{\"fault\":{\"faultstring\":\"Unresolved variable : request.header.Authorization\",\"detail\":{\"errorcode\":\"steps.basicauthentication.UnresolvedVariable\"}}}';
 
     
     private static Map<String,String> setupAuthProviderConfig () 
@@ -82,6 +85,33 @@ public class ApigeeAuthProviderTest {
     { 
         final Map<String,String> authProviderConfiguration = setupAuthProviderConfig(); 
        	final ApigeeAuthProvider provider = new ApigeeAuthProvider(); 
+        
+        Test.setMock(HttpCalloutMock.class, new ApigeeMockService(jsonGoodToken,200)); 
+    
+        final Map<String,String> queryParams = new Map<String,String>(); 
+        queryParams.put('code','code'); 
+        queryParams.put('state',STATE); 
+        
+        final Auth.AuthProviderCallbackState cbState = new Auth.AuthProviderCallbackState(null,null,queryParams); 
+        
+        final Auth.AuthProviderTokenResponse actualAuthProvResponse = provider.handleCallback(authProviderConfiguration, cbState); 
+        
+        final Auth.AuthProviderTokenResponse expectedAuthProvResponse = new Auth.AuthProviderTokenResponse(PROVIDER_NAME, ACCESS_TOKEN, SECRET, STATE); 
+    
+        System.assertEquals(expectedAuthProvResponse.provider, actualAuthProvResponse.provider); 
+        System.assertEquals(expectedAuthProvResponse.oauthToken, actualAuthProvResponse.oauthToken); 
+        System.assertEquals(expectedAuthProvResponse.oauthSecretOrRefreshToken, actualAuthProvResponse.oauthSecretOrRefreshToken); 
+        System.assertEquals(expectedAuthProvResponse.state, actualAuthProvResponse.state); 
+
+    }
+
+    static testMethod void testHandleCallbackJson() 
+    { 
+        final Map<String,String> authProviderConfiguration = setupAuthProviderConfig();
+        // override the USE_JSON config
+        authProviderConfiguration.put(ApigeeAuthProvider.CMT_FIELD_USE_JSON,'True');
+
+        final ApigeeAuthProvider provider = new ApigeeAuthProvider(); 
         
         Test.setMock(HttpCalloutMock.class, new ApigeeMockService(jsonGoodToken,200)); 
     
@@ -243,8 +273,8 @@ public class ApigeeAuthProviderTest {
     // Implement a mock http response generator for Apigee. 
     public class ApigeeMockService implements HttpCalloutMock 
     {
-        final String jsonResponse;
-        final Integer httpCode;
+        String jsonResponse;
+        Integer httpCode;
 
         public ApigeeMockService(String json, Integer code) {
             this.jsonResponse=json;
@@ -253,9 +283,17 @@ public class ApigeeAuthProviderTest {
 
         public HTTPResponse respond(HTTPRequest req) 
         { 
-            // Create a fake response 
+            if (req.getHeader(CONTENT_TYPE_HEADER)==CONTENT_TYPE_JSON) {
+                // Check for Query Parameters on the Endpoint URL and if any are found, return a server error
+                final PageReference endpoint = new PageReference(req.getEndpoint());
+                if (endpoint.getParameters().size() > 0) {
+                    this.httpCode=500;
+                    this.jsonResponse= jsonBadQueryParam;
+                }
+            }
+            // Create the response 
             HttpResponse res = new HttpResponse(); 
-            res.setHeader('Content-Type', 'application/json'); 
+            res.setHeader(CONTENT_TYPE_HEADER, CONTENT_TYPE_JSON); 
             res.setBody(jsonResponse); 
             res.setStatusCode(this.httpCode); 
             return res; 
