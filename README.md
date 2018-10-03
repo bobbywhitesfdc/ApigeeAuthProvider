@@ -1,14 +1,14 @@
-# SFDX  App
-ApigeeAuthProvider
+# SFDX  App<br/>
+ApigeeAuthProvider<br/>
 
-## Dev -- Deploy to Scratch Org 
+## Dev -- Deploy to Scratch Org<br/> 
 
-sfdx force:org:create -f config/project-scratch-def.json -a MyScratchOrg
-sfdx force:source:push -u MyScratchOrg
+sfdx force:org:create -f config/project-scratch-def.json -a MyScratchOrg<br/>
+sfdx force:source:push -u MyScratchOrg<br/>
 
-## Dev -- Deploy to Sandbox 
-sfdx force:source:convert -d temp/ --packagename ApigeeAuthProvider
-sfdx force:mdapi:deploy -d temp/ -u "sandbox_username" -l RunSpecifiedTests -r ApigeeAuthProviderTest 
+## Dev -- Deploy to Sandbox<br/> 
+sfdx force:source:convert -d temp/ --packagename ApigeeAuthProvider<br/>
+sfdx force:mdapi:deploy -d temp/ -u "sandbox_username" -l RunSpecifiedTests -r ApigeeAuthProviderTest<br/>
 
 ## Resources
 
