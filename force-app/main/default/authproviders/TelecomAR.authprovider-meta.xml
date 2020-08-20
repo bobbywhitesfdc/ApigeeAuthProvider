@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
-    <customMetadataTypeRecord>Apigee_Auth_Provider__mdt.ApigeeEval</customMetadataTypeRecord>
+    <customMetadataTypeRecord>Apigee_Auth_Provider__mdt.TelecomAR</customMetadataTypeRecord>
     <executionUser>admin1@example.com</executionUser>
-    <friendlyName>ApigeeEval</friendlyName>
+    <friendlyName>TelecomAR</friendlyName>
     <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
     <plugin>ApigeeAuthProvider</plugin>
     <providerType>Custom</providerType>

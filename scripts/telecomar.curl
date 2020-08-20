@@ -1,0 +1,35 @@
+curl --user salesforcebasic:salesforcebasic -H 'Content-Type: application/x-www-form-urlencoded' -X POST  -d 'grant_type=client_credentials'  https://sesiont.telecom.com.ar/openam/oauth2/access_token?realm=/authappext
+
+
+// Response looks like this JSON
+{
+	"access_token": "b0e06413-56e0-4500-88d2-39130b121c41",
+	"scope": "openid",
+	"id_token": "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEreStXZ3JINVVpOVdUaW9MdDA9IiwiYWxnIjoiUlMyNTYifQ.eyJhdF9oYXNoIjoiT1I1NFpBaGlULUR4dUhDcHJLTzA2ZyIsInN1YiI6InNhbGVzZm9yY2ViYXNpYyIsImF1ZGl0VHJhY2tpbmdJZCI6Ijg4YzU2NDEyLWNiZjItNGRmZS1hZWMxLTk4YjUzYzYwYjY1Yi0zMTczOTkxIiwiaXNzIjoiaHR0cHM6Ly9zZXNpb250LnRlbGVjb20uY29tLmFyOjQ0My9vcGVuYW0vb2F1dGgyL2F1dGhhcHBleHQiLCJ0b2tlbk5hbWUiOiJpZF90b2tlbiIsImF1ZCI6InNhbGVzZm9yY2ViYXNpYyIsImF6cCI6InNhbGVzZm9yY2ViYXNpYyIsImF1dGhfdGltZSI6MTU5Nzk0MDU5NCwicmVhbG0iOiIvYXV0aGFwcGV4dCIsImV4cCI6MTU5Nzk0NDE5NCwidG9rZW5UeXBlIjoiSldUVG9rZW4iLCJpYXQiOjE1OTc5NDA1OTR9.eE3lKyjMB7tGZ6nc4bFw3Qlq02JAnPotl7EkPKUtDKfqkWziZPlMglF8ZI5__20JTpxCCFzBzHAduSh5jiSRyvtQ36_FVpl7N-Eg841pHPvrSj4fpqkVLD6XB0Jg6fi5BWLcg9tYkbqJyaxdMEzPloWKYW_LB75Fn3C2A2fqXOkCA3Dlw7Zbn8pcKQORGUVqZZS_6a8J6Svl69m7eg7I7LeeX6OWIS5_DyyyNLDw5acb-eBXfLlCUBOweA5iZXitjdTlHDWB0YjmVcTbsX7jdC2uOJUBH_AAkEXB7QeiijJwR-k74ne55iR9U5rFm6WM7Owz_P6d6M-w3uBoV6rmjg",
+	"token_type": "Bearer",
+	"expires_in": 3599
+}
+
+// Using the id_token to make the callout to the API now
+
+curl  -H 'Authorization : Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEreStXZ3JINVVpOVdUaW9MdDA9IiwiYWxnIjoiUlMyNTYifQ.eyJhdF9oYXNoIjoiT1I1NFpBaGlULUR4dUhDcHJLTzA2ZyIsInN1YiI6InNhbGVzZm9yY2ViYXNpYyIsImF1ZGl0VHJhY2tpbmdJZCI6Ijg4YzU2NDEyLWNiZjItNGRmZS1hZWMxLTk4YjUzYzYwYjY1Yi0zMTczOTkxIiwiaXNzIjoiaHR0cHM6Ly9zZXNpb250LnRlbGVjb20uY29tLmFyOjQ0My9vcGVuYW0vb2F1dGgyL2F1dGhhcHBleHQiLCJ0b2tlbk5hbWUiOiJpZF90b2tlbiIsImF1ZCI6InNhbGVzZm9yY2ViYXNpYyIsImF6cCI6InNhbGVzZm9yY2ViYXNpYyIsImF1dGhfdGltZSI6MTU5Nzk0MDU5NCwicmVhbG0iOiIvYXV0aGFwcGV4dCIsImV4cCI6MTU5Nzk0NDE5NCwidG9rZW5UeXBlIjoiSldUVG9rZW4iLCJpYXQiOjE1OTc5NDA1OTR9.eE3lKyjMB7tGZ6nc4bFw3Qlq02JAnPotl7EkPKUtDKfqkWziZPlMglF8ZI5__20JTpxCCFzBzHAduSh5jiSRyvtQ36_FVpl7N-Eg841pHPvrSj4fpqkVLD6XB0Jg6fi5BWLcg9tYkbqJyaxdMEzPloWKYW_LB75Fn3C2A2fqXOkCA3Dlw7Zbn8pcKQORGUVqZZS_6a8J6Svl69m7eg7I7LeeX6OWIS5_DyyyNLDw5acb-eBXfLlCUBOweA5iZXitjdTlHDWB0YjmVcTbsX7jdC2uOJUBH_AAkEXB7QeiijJwR-k74ne55iR9U5rFm6WM7Owz_P6d6M-w3uBoV6rmjg' https://dxpt.telecom.com.ar/OutageMiddleware/v1/outages/addressoutage/6e42e-e633d-97403-7ee5b-2dd5?dateFrom=2020-04-03&dateTo=2020-04-04
+
+// Response looks like
+{
+  "code" : 60,
+  "reason" : "Not Found",
+  "message" : "404 Not Found from GET https://om-outage-oum-outagemanager-test.apps-re.cloudteco.com.ar/api/outages/address/6e42e-e633d-97403-7ee5b-2dd5?outageType&productType&dateFrom=2020-04-03&dateTo",
+  "transactionId" : "b799ed1f5f3ea4930cddcdd2",
+  "timestamp" : "2020-08-20T13:28Z",
+  "status" : "404"
+}
+
+curl -H 'Content-Type: application/x-www-form-urlencoded' -X POST  -d 'grant_type=client_credentials'  https://sesiont.telecom.com.ar/openam/oauth2/access_token?realm=/authappext
+
+curl --location --request POST 'https://sesiont.telecom.com.ar/openam/oauth2/access_token?realm=/authappext' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'client_id=salesforcepost' \
+--data-urlencode 'client_secret=salesforcepost' \
+--data-urlencode 'grant_type=client_credentials' \
+--data-urlencode 'token_endpoint_auth_method=client_secret_post'
+

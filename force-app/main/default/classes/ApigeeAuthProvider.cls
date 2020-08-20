@@ -109,7 +109,7 @@ public class ApigeeAuthProvider extends Auth.AuthProviderPluginClass{
     public override Auth.OAuthRefreshResult refresh(Map<String,String> config, String refreshToken) {
         System.debug('refresh');
         final TokenResponse response = retrieveToken(config);
-        return new Auth.OAuthRefreshResult(response.access_token, response.token_type);
+        return new Auth.OAuthRefreshResult(response.id_token, response.token_type);
     }
 
        
@@ -212,6 +212,7 @@ public class ApigeeAuthProvider extends Auth.AuthProviderPluginClass{
         params.put(GRANT_TYPE_PARAM,GRANT_TYPE_CLIENT_CREDS);
         params.put(CLIENT_ID_PARAM, config.get(CMT_FIELD_CLIENT_ID));
         params.put(CLIENT_SECRET_PARAM, config.get(CMT_FIELD_CLIENT_SECRET));
+        params.put('token_endpoint_auth_method','client_secret_post');
         final String scope = config.get(CMT_FIELD_SCOPE);
         if (!String.isEmpty(scope)) {
             params.put(SCOPE_PARAM,scope);
@@ -281,6 +282,7 @@ public class ApigeeAuthProvider extends Auth.AuthProviderPluginClass{
         public String issued_at {get;set;}
         public String client_id {get;set;}
         public String access_token {get;set;}
+        public String id_token {get; set;}
         public String application_name {get;set;}
         public String scope {get;set;}
         public String expires_in {get;set;}
