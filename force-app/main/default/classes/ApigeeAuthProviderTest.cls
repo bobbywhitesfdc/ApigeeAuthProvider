@@ -30,9 +30,12 @@ public class ApigeeAuthProviderTest {
     	private static final String SCOPE = 'View';
     
         private static final String STATE_TO_PROPOGATE = 'testState'; 
+        private static final String TEST_CODE = 'code';
         private static final String ACCESS_TOKEN_URL = 
         'http://www.dummyhost.com/accessTokenUri';
         private static final String EMPTY_VALUE = ''; 
+        private static final String STATE_PARAM = 'state';
+        private static final String CODE_PARAM = 'code';
 
         private static final String jsonGoodToken = '{'+
         '  \"refresh_token_expires_in\" : \"0\",'+
@@ -86,10 +89,10 @@ public class ApigeeAuthProviderTest {
         final ApigeeAuthProvider provider = new ApigeeAuthProvider(); 
         
         final PageReference expectedUrl = new PageReference(authProviderConfiguration.get('Callback_URL__c'));
-        expectedUrl.getParameters().put('state',STATE_TO_PROPOGATE);
+        expectedUrl.getParameters().put(STATE_PARAM,STATE_TO_PROPOGATE);
 
         final PageReference actualUrl = provider.initiate(authProviderConfiguration, STATE_TO_PROPOGATE); 
-        System.assertEquals(expectedUrl.getParameters().get('state'), actualUrl.getParameters().get('state'));
+        System.assertEquals(expectedUrl.getParameters().get(STATE_PARAM), actualUrl.getParameters().get(STATE_PARAM));
    
     }
     
@@ -101,8 +104,8 @@ public class ApigeeAuthProviderTest {
         Test.setMock(HttpCalloutMock.class, new ApigeeMockService(jsonGoodToken,200)); 
     
         final Map<String,String> queryParams = new Map<String,String>(); 
-        queryParams.put('code','code'); 
-        queryParams.put('state',STATE); 
+        queryParams.put(CODE_PARAM,TEST_CODE); 
+        queryParams.put(STATE_PARAM,STATE); 
         
         final Auth.AuthProviderCallbackState cbState = new Auth.AuthProviderCallbackState(null,null,queryParams); 
         
@@ -128,8 +131,8 @@ public class ApigeeAuthProviderTest {
         Test.setMock(HttpCalloutMock.class, new ApigeeMockService(jsonGoodToken,200)); 
     
         final Map<String,String> queryParams = new Map<String,String>(); 
-        queryParams.put('code','code'); 
-        queryParams.put('state',STATE); 
+        queryParams.put(CODE_PARAM,TEST_CODE); 
+        queryParams.put(STATE_PARAM,STATE); 
         
         final Auth.AuthProviderCallbackState cbState = new Auth.AuthProviderCallbackState(null,null,queryParams); 
         
@@ -152,13 +155,13 @@ public class ApigeeAuthProviderTest {
         Test.setMock(HttpCalloutMock.class, new ApigeeMockService(jsonError1,401)); 
     
         final Map<String,String> queryParams = new Map<String,String>(); 
-        queryParams.put('code','code'); 
-        queryParams.put('state',STATE); 
+        queryParams.put(CODE_PARAM,TEST_CODE); 
+        queryParams.put(STATE_PARAM,STATE); 
         
         final Auth.AuthProviderCallbackState cbState = new Auth.AuthProviderCallbackState(null,null,queryParams); 
         
         try {
-            final Auth.AuthProviderTokenResponse actualAuthProvResponse = provider.handleCallback(authProviderConfiguration, cbState); 
+            provider.handleCallback(authProviderConfiguration, cbState); 
             System.Assert(false,'Should throw an Exception on bad http return code!');
         } catch (ApigeeAuthProvider.TokenException ex) {
             System.AssertEquals('Invalid client identifier oauth.v2.InvalidClientIdentifier',ex.getMessage());
@@ -173,13 +176,13 @@ public class ApigeeAuthProviderTest {
         Test.setMock(HttpCalloutMock.class, new ApigeeMockService(jsonError2,401)); 
     
         final Map<String,String> queryParams = new Map<String,String>(); 
-        queryParams.put('code','code'); 
-        queryParams.put('state',STATE); 
+        queryParams.put(CODE_PARAM,TEST_CODE); 
+        queryParams.put(STATE_PARAM,STATE); 
         
         final Auth.AuthProviderCallbackState cbState = new Auth.AuthProviderCallbackState(null,null,queryParams); 
         
         try {
-            final Auth.AuthProviderTokenResponse actualAuthProvResponse = provider.handleCallback(authProviderConfiguration, cbState); 
+            provider.handleCallback(authProviderConfiguration, cbState); 
             System.Assert(false,'Should throw an Exception on bad http return code!');
         } catch (ApigeeAuthProvider.TokenException ex) {
             System.AssertEquals('invalid_client',ex.getMessage());
