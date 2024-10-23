@@ -1,3 +1,8 @@
+<a href="https://githubsfdeploy.herokuapp.com?owner=bobbywhitesfdc&repo=ApigeeAuthProvider">
+  <img alt="Deploy to Salesforce"
+       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+<br/>
 # SFDX  App<br/>
 ApigeeAuthProvider<br/>
 
